@@ -1,0 +1,23 @@
+# Filename: my.kv
+
+<MyGrid>:
+    query: query
+
+    GridLayout:
+        cols:1
+        size: root.width, root.height
+
+        GridLayout:
+            cols:2
+
+            Label:
+                text: "Result: "
+
+            TextInput:
+                id: query
+                multinline:False
+
+
+        Button:
+            text:"SQL"
+            on_press: root.btn()
