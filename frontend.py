@@ -10,7 +10,9 @@ from kivy.properties import ObjectProperty
 
 
 class MyGrid(Widget):
-    query = ObjectProperty(None)
+    location = ObjectProperty(None)
+    time = ObjectProperty(None)
+    recommendations = ObjectProperty(None)
 
     def btn(self):
         result = mybackend.select_top_duration(1)

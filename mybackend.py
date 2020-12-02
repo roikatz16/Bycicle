@@ -4,7 +4,7 @@ import csv
 conn = sqlite3.connect('database.db')
 cur = conn.cursor()
 
-with open("../Projects/Classes/BikeShare.csv") as a_file:
+with open("BikeShare.csv") as a_file:
     reader = csv.reader(a_file)
     titles = tuple(next(reader))
     num_of_columns = len(titles)
