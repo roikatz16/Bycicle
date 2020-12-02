@@ -1,7 +1,7 @@
 import sqlite3
 import csv
 
-conn = sqlite3.connect('data.db')
+conn = sqlite3.connect('database.db')
 cur = conn.cursor()
 
 with open("../Projects/Classes/BikeShare.csv") as a_file:
@@ -13,7 +13,6 @@ with open("../Projects/Classes/BikeShare.csv") as a_file:
     cur.executemany(f"INSERT INTO bike VALUES {question_marks}", reader)
     # cur.execute("SELECT * FROM data")
     # print(cur.fetchall())
-
 
 
 def execute_query(query):
