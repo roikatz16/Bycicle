@@ -1,7 +1,9 @@
 # Filename: my.kv
 
 <MyGrid>:
-    query: query
+    location: location
+    time: time
+    recommendations: recommendations
 
     GridLayout:
         cols:1
@@ -11,13 +13,27 @@
             cols:2
 
             Label:
-                text: "Result: "
+                text: "What is your current location?"
 
             TextInput:
-                id: query
+                id: location
+                multinline:False
+
+            Label:
+                text: "How much time would you like to spend?"
+
+            TextInput:
+                id: time
+                multinline:False
+
+            Label:
+                text: "How much location recommendations would you like to receive?"
+
+            TextInput:
+                id: recommendations
                 multinline:False
 
 
         Button:
-            text:"SQL"
+            text:"Recommend me"
             on_press: root.btn()
