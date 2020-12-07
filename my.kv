@@ -1,3 +1,4 @@
+#:import utils kivy.utils
 # Filename: my.kv
 
 <MyGrid>:
@@ -5,35 +6,47 @@
     time: time
     recommendations: recommendations
 
+
     GridLayout:
-        cols:1
+        id: total
         size: root.width, root.height
+        cols:1
 
         GridLayout:
+            id: inputs
+            size: root.width, root.height
             cols:2
 
             Label:
                 text: "What is your current location?"
+                bold: True
+
 
             TextInput:
                 id: location
-                multinline:False
+                multinline: False
 
             Label:
                 text: "How much time would you like to spend?"
 
+
             TextInput:
                 id: time
-                multinline:False
+                multinline: False
 
             Label:
-                text: "How much location recommendations would you like to receive?"
+                text: "How much location recommendations\n would you like to receive?"
+
 
             TextInput:
                 id: recommendations
-                multinline:False
-
+                multinline: False
 
         Button:
             text:"Recommend me"
             on_press: root.btn()
+            font_size: "20sp"
+            background_color: (1, 1, 1, 1)
+            color: (1, 1, 1, 1)
+            size_hint: (1, .3)
+
