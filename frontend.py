@@ -15,8 +15,16 @@ class MyGrid(Widget):
     recommendations = ObjectProperty(None)
 
     def btn(self):
-        result = mybackend.select_top_duration(1)
+        duration = self.time.text
+        start_location = self.location.text
+        num_of_result = self.recommendations.text
+
+    def get_recommendation(self, duration, start_location, num_of_result):
+        result = mybackend.select_end_stations(duration, start_location, num_of_result)
         print(result)
+        return result
+
+
 
 
 class MyApp(App):
