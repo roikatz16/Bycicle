@@ -19,31 +19,27 @@ class Database:
         self.cur.executemany("INSERT INTO bike VALUES (?,?,?,?)", data_as_array)
         self.conn.commit()
 
-    def execute_query(self, duration, start_location):
-        alpha = duration*0.75
-        beta = duration*1.25
+    def select_end_stations(self, duration, start_location, num_of_result):
+        #
+
+        # if the wanted duration time is
+        alpha = duration * 0.75
+        beta = duration * 1.25
         if beta < duration + 5:
             beta = duration + 5
             alpha = duration - 5
 
-        # self.cur.execute(f"SELECT COUNT(EndStationName) AS C, EndStationName, AVG(TripDurationinmin) AS A "
-        #                  f"FROM bike "
-        #                  f"WHERE StartStationName = '{start_location}' "
-        #                  f"GROUP BY EndStationName "
-        #                  f"HAVING A BETWEEN {alpha} AND {beta} "
-        #                  f"ORDER BY C DESC")
-
-        self.cur.execute(f"SELECT COUNT(EndStationName) AS C1, EndStationName, AVG(TripDurationinmin) AS A "
+        self.cur.execute(f"SELECT SUM(CASE WHEN UserType='Subscriber' THEN 5 ELSE 1 END) AS Co, "
+                         f"EndStationName, AVG(TripDurationinmin) AS Av "
                          f"FROM bike "
                          f"WHERE StartStationName = '{start_location}' "
                          f"GROUP BY EndStationName "
-                         f"HAVING A BETWEEN {alpha} AND {beta} "
-                         f"ORDER BY C DESC")
-
+                         f"HAVING Av BETWEEN {alpha} AND {beta} "
+                         f"ORDER BY Co DESC "
+                         f"LIMIT {num_of_result}")
 
         result = self.cur.fetchall()
         self.print_result(result)
-
 
     def print_result(self, result):
         for row in result:
@@ -51,6 +47,4 @@ class Database:
 
 
 my_backend = Database()
-my_backend.execute_query(30, "Lincoln Park")
-
-
+my_backend.select_end_stations(30, "Lincoln Park", 5)
