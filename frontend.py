@@ -1,6 +1,5 @@
 from kivy.config import Config
 
-
 from kivy.core.window import Window
 from kivy.uix.actionbar import ActionButton
 from kivy.uix.popup import Popup
@@ -10,6 +9,8 @@ from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
 from kivymd.uix.behaviors import HoverBehavior
+from kivy.uix.label import Label
+
 
 class MyGrid(Widget):
     my_database = Database()
@@ -106,8 +107,11 @@ class MyGrid(Widget):
         return result
 
 
-
 class MyActionButton(HoverBehavior, ActionButton):
+    pass
+
+
+class MyButton(HoverBehavior, Button):
     pass
 
 
@@ -125,5 +129,5 @@ class MyApp(App):
 
 if __name__ == "__main__":
     Window.fullscreen = 'fake'
-    Window.size = (600, 300)
+    Window.size = (600, 400)
     MyApp().run()
