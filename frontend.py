@@ -29,22 +29,22 @@ class MyGrid(Widget):
         # check that num of result is a positive number (int)
         if not self.check_recommendions_type(num_of_result):
             # create content and add to the popup
-            self.raise_popup("Recommendations should be an integer positive number")
+            self.raise_popup("Error", "Recommendations should be an integer positive number")
             flag = False
 
         # check that duration is a positive number (int or float)
         if not self.check_duration_type(duration):
-            self.raise_popup("Duration should be a positive number")
+            self.raise_popup("Error", "Duration should be a positive number")
             flag = False
 
         # check if location is string
         if not self.check_location_type(start_location):
-            self.raise_popup("Location should be a string")
+            self.raise_popup("Error", "Location should be a string")
             flag = False
         else:
             # check if location is exist
             if not self.my_database.valid_start_location(start_location):
-                self.raise_popup("Location is not exist")
+                self.raise_popup("Error", "Location is not exist")
                 flag = False
 
         # if all values check pass
@@ -54,8 +54,12 @@ class MyGrid(Widget):
             end_locations = ""
             for row in result:
                 end_locations = end_locations + "\n" + row[1]
+            if end_locations == "":
+                end_locations = "Unfortanly we didn't find any recommendation that match your request :( \n You can try to change your preference"
+                self.raise_popup(f"Sorry", end_locations, change_size=0)
             # pop up with names
-            self.raise_popup(end_locations)
+            else:
+                self.raise_popup(f"Here is your top recommendation", end_locations, change_size=len(result))
 
     def clear_inputs(self, text_inputs):
         for text_input in text_inputs:
@@ -93,9 +97,19 @@ class MyGrid(Widget):
         except ValueError:
             return False
 
-    def raise_popup(self, text):
+    def raise_popup(self, error_type, text, change_size=None):
         content = Button(text=text)
-        popup = Popup(title='Error', content=content, auto_dismiss=False, size_hint=(None, None), size=(400, 400))
+        if change_size is not None:
+            high = 100 + 20 * change_size
+            width = 400
+            if change_size == 0:
+                high = 200
+                width = 600
+            popup = Popup(title=error_type, content=content, auto_dismiss=False, size_hint=(None, None),
+                          size=(width, high))
+        else:
+            popup = Popup(title=error_type, content=content, auto_dismiss=False, size_hint=(None, None),
+                          size=(450, 200))
 
         # bind the on_press event of the button to the dismiss function
         content.bind(on_press=popup.dismiss)
