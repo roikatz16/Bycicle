@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import csv
 
+
 class Database:
     def __init__(self):
         self.conn = sqlite3.connect('database.db')
@@ -16,7 +17,6 @@ class Database:
         if len(result) > 0:
             return True
         return False
-
 
     def read_database(self):
         if not self.if_table_exist():
@@ -65,7 +65,6 @@ class Database:
     def print_result(self, result):
         for row in result:
             print(row)
-
 
 # my_backend = Database()
 # # res = my_backend.select_end_stations(30, "Lincoln Park", 5)

@@ -1,4 +1,5 @@
 #:import utils kivy.utils
+#:import hex kivy.utils.get_color_from_hex
 # Filename: my.kv
 
 <MyGrid>:
@@ -11,6 +12,35 @@
         id: total
         size: root.width, root.height
         cols:1
+
+        ActionBar:
+            height: 35
+            pos_hint: {'top':1}
+            background_image: 'white-bg.png'
+            background_color: hex('#c3d9ef')
+            ActionView:
+
+                use_separator: True
+                ActionPrevious:
+                    color: hex('#265b8c')
+                    app_icon: 'icons8-bicycle-40.png'
+                    title: ' Michal & Roi Bike Routs Recommendation App'
+                    with_previous: False
+                ActionOverflow:
+                MyActionButton:
+                    icon: 'icons8-minimize-window-48.png' if self.hovered else "icons8-minimize-window-50.png"
+                    on_press: app.root_window.minimize()
+                    border: 10,10,10,10
+                MyActionButton:
+                    icon: 'icons8-minimize-window-48.png' if self.hovered else "icons8-minimize-window-50.png"
+                    on_press: app.root_window.minimize()
+                    border: 10,10,10,10
+                MyActionButton:
+                    # important: True
+                    icon: 'icons8-close-window-48.png' if self.hovered else 'icons8-close-window-24.png'
+                    on_press: app.stop()
+                    border: 10,10,10,10
+
 
         GridLayout:
             id: inputs
