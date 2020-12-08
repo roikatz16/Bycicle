@@ -143,5 +143,5 @@ class MyApp(App):
 
 if __name__ == "__main__":
     Window.fullscreen = 'fake'
-    Window.size = (600, 400)
+    Window.size = (700, 400)
     MyApp().run()
