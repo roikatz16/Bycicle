@@ -8,9 +8,8 @@ from mybackend import Database
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty, ListProperty
+from kivy.properties import ObjectProperty
 from kivymd.uix.behaviors import HoverBehavior
-from kivy.uix.label import Label
 
 
 class MyGrid(Widget):
@@ -43,7 +42,7 @@ class MyGrid(Widget):
         else:
             # check if location is exist
             if not self.my_database.valid_start_location(start_location):
-                self.raise_popup("Error", "Location is not exist")
+                self.raise_popup("Error", f"{start_location} is not exist")
                 flag = False
 
         # if all values check pass
@@ -54,11 +53,12 @@ class MyGrid(Widget):
             for row in result:
                 end_locations = end_locations + "\n" + row[1]
             if end_locations == "":
-                end_locations = "Unfortanly we didn't find any recommendation that match your request :( \n You can try to change your preference"
+                end_locations = "Unfortunately we didn't find any recommendation that match your request :( \n You can " \
+                                "try to change your preference "
                 self.raise_popup(f"Sorry", end_locations, change_size=0)
             # pop up with names
             else:
-                self.raise_popup(f"Here is your top recommendation", end_locations, change_size=len(result))
+                self.raise_popup(f"Here is your top recommendations", end_locations, change_size=len(result))
 
     def clear_inputs(self, text_inputs):
         for text_input in text_inputs:
@@ -96,9 +96,8 @@ class MyGrid(Widget):
         except ValueError:
             return False
 
-
     def raise_popup(self, error_type, text, change_size=None):
-        content = Button(text=text, color=(0, 0, 0, 1),  background_normal='bicycle2.png', background_down='(0,1,0,1)')
+        content = Button(text=text, color=(0, 0, 0, 1), background_normal='bicycle2.png', background_down='(0,1,0,1)')
         if change_size is not None:
             high = 100 + 20 * change_size
             width = 400
