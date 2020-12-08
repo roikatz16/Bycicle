@@ -46,7 +46,7 @@ class MyGrid(Widget):
 
         # if all values check pass
         if flag:
-            result = self.get_recommendation(float(duration), start_location, int(num_of_result))
+            result = self.get_recommendation(int(duration), start_location, int(num_of_result))
             # make one string of end locations names
             end_locations = ""
             for row in result:
