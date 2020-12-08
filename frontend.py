@@ -8,7 +8,7 @@ from mybackend import Database
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty, ListProperty
+from kivy.properties import ObjectProperty
 from kivymd.uix.behaviors import HoverBehavior
 from kivy.uix.label import Label
 
@@ -46,7 +46,7 @@ class MyGrid(Widget):
         else:
             # check if location is exist
             if not self.my_database.valid_start_location(start_location):
-                self.raise_popup("Error", "Location is not exist")
+                self.raise_popup("Error", f"{start_location} is not exist")
                 flag = False
 
         # if all values check pass (flag==true)
@@ -58,12 +58,14 @@ class MyGrid(Widget):
                 end_locations = end_locations + "\n" + row[1]
             # if there is no results
             if end_locations == "":
+                end_locations = "Unfortunately we didn't find any recommendation that match your request :( \n You can " \
+                                "try to change your preference "
                 # end locations string is a message
                 end_locations = "Unfortanly we didn't find any recommendation that match your request :( \n You can try to change your preference"
                 self.raise_popup(f"Sorry", end_locations, change_size=0)
             # pop up with names
             else:
-                self.raise_popup(f"Here is your top recommendation", end_locations, change_size=len(result))
+                self.raise_popup(f"Here is your top recommendations", end_locations, change_size=len(result))
 
     # raise popup for empty input values
     def check_empty_input_values(self, duration, start_location, num_of_result):
@@ -160,5 +162,5 @@ class MyApp(App):
 
 if __name__ == "__main__":
     Window.fullscreen = 'fake'
-    Window.size = (600, 400)
+    Window.size = (700, 400)
     MyApp().run()
