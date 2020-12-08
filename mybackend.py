@@ -28,21 +28,24 @@ class Database:
             self.cur.executemany("INSERT INTO bike VALUES (?,?,?,?)", data_as_array)
             self.conn.commit()
 
+    # put each station name from database on list
     def get_station_names_list(self):
         self.cur.execute(f"SELECT DISTINCT StartStationName FROM bike")
         result = self.cur.fetchall()
         return result
 
+    # select the wanted end station by SQL query
     def select_end_stations(self, duration, start_location, num_of_result):
-        #
 
-        # if the wanted duration time is
-        alpha = duration * 0.75
-        beta = duration * 1.25
+        # determine the range of the duration using alpha and beta
+        alpha = duration * 0.75 # upper bound
+        beta = duration * 1.25 # lower bound
+        # fix the range if it is too small
         if beta < duration + 5:
             beta = duration + 5
             alpha = duration - 5
 
+        # SQL query
         self.cur.execute(f"SELECT SUM(CASE WHEN UserType='Subscriber' THEN 5 ELSE 1 END) AS Co, "
                          f"EndStationName, AVG(TripDurationinmin) AS Av "
                          f"FROM bike "
@@ -56,7 +59,9 @@ class Database:
         # self.print_result(result)
         return result
 
+    # check if input location is valid
     def valid_start_location(self, start_location_input_text):
+        # use station_name list for check valid location
         for location in self.station_names:
             if location[0] == start_location_input_text:
                 return True

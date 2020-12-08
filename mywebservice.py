@@ -10,15 +10,19 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def search_locations():
     my_database = Database()
+    # get values from the request
     req = request.values
     try:
+        # casting values
         duration = float(req["timeduration"])
         start_location = req["startlocation"]
         num_of_result = int(req["k"])
     except ValueError:
+        # return an empty JSON for incorrect input
         return {}
     result = my_database.select_end_stations(duration, start_location, num_of_result)
     stations_names = []
+    # put only stations names on list
     for row in result:
         stations_names.append(row[1])
     return json.dumps(stations_names)
