@@ -1,3 +1,7 @@
+from kivy.config import Config
+
+
+from kivy.core.window import Window
 from kivy.uix.actionbar import ActionButton
 from kivy.uix.popup import Popup
 from mybackend import Database
@@ -6,13 +10,6 @@ from kivy.uix.button import Button
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
 from kivymd.uix.behaviors import HoverBehavior
-from kivy.config import Config
-
-Config.set('graphics', 'width', '600')
-Config.set('graphics', 'height', '300')
-# Config.set('graphics', 'fullscreen', 'Auto')
-Config.set('graphics', 'borderless', 1)
-
 
 class MyGrid(Widget):
     my_database = Database()
@@ -123,14 +120,24 @@ class MyGrid(Widget):
         return result
 
 
+
 class MyActionButton(HoverBehavior, ActionButton):
     pass
 
 
 class MyApp(App):
+
     def build(self):
         return MyGrid()
 
+    def MaxiMin_app_button(self):
+        if Window.fullscreen == 'fake':
+            Window.fullscreen = 'auto'
+        else:
+            Window.fullscreen = 'fake'
+
 
 if __name__ == "__main__":
+    Window.fullscreen = 'fake'
+    Window.size = (600, 300)
     MyApp().run()
