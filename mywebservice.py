@@ -6,6 +6,7 @@ from mybackend import Database
 
 app = Flask(__name__)
 
+
 @app.route('/', methods=['GET'])
 def search_locations():
     my_database = Database()

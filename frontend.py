@@ -1,13 +1,14 @@
 from kivy.config import Config
 
 from kivy.core.window import Window
+from kivy.input.providers.mouse import Color
 from kivy.uix.actionbar import ActionButton
 from kivy.uix.popup import Popup
 from mybackend import Database
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, ListProperty
 from kivymd.uix.behaviors import HoverBehavior
 from kivy.uix.label import Label
 
@@ -95,8 +96,9 @@ class MyGrid(Widget):
         except ValueError:
             return False
 
+
     def raise_popup(self, error_type, text, change_size=None):
-        content = Button(text=text)
+        content = Button(text=text, color=(0, 0, 0, 1),  background_normal='bicycle2.png', background_down='(0,1,0,1)')
         if change_size is not None:
             high = 100 + 20 * change_size
             width = 400
@@ -104,10 +106,10 @@ class MyGrid(Widget):
                 high = 200
                 width = 600
             popup = Popup(title=error_type, content=content, auto_dismiss=False, size_hint=(None, None),
-                          size=(width, high))
+                          size=(width, high), background='green.png')
         else:
             popup = Popup(title=error_type, content=content, auto_dismiss=False, size_hint=(None, None),
-                          size=(450, 200))
+                          size=(450, 200), background='green.png')
 
         # bind the on_press event of the button to the dismiss function
         content.bind(on_press=popup.dismiss)
