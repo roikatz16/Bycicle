@@ -27,6 +27,7 @@ class MyGrid(Widget):
         flag = True
         # check if there is missing values
         if self.check_empty_input_values(duration, start_location, num_of_result):
+            self.raise_popup("Error", "Missing value")
             return None
         # check that num of result is a positive number (int)
         if not self.check_recommendions_type(num_of_result):
@@ -70,9 +71,16 @@ class MyGrid(Widget):
     # raise popup for empty input values
     def check_empty_input_values(self, duration, start_location, num_of_result):
         if duration == "" or start_location == "" or num_of_result == "":
-            self.raise_popup("Error", "Missing value")
             return True
         return False
+
+    # clear values after button click
+    def clear_inputs(self):
+        if self.check_empty_input_values(self.time.text, self.location.text, self.recommendations.text):
+            return
+        self.time.text = ""
+        self.location.text = ""
+        self.recommendations.text = ""
 
     # check that location type is string
     def check_location_type(self, user_input):
