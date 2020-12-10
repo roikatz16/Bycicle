@@ -7,36 +7,44 @@ import csv
 class Database:
     def __init__(self):
         self.conn = sqlite3.connect('database.db')
-        self.cur = self.conn.cursor()
+        # self.cur = self.conn.cursor()
         self.read_database()
         self.station_names = self.get_station_names_list()
 
+    @property
+    def cursor(self):
+        self.conn = sqlite3.connect('database.db')
+        return self.conn.cursor()
+
     def if_table_exist(self):
-        self.cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='bike';")
-        result = self.cur.fetchall()
+        cur = self.cursor
+        cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='bike';")
+        result = cur.fetchall()
         if len(result) > 0:
             return True
         return False
 
     def read_database(self):
         if not self.if_table_exist():
+            cur = self.cursor
             # load the csv file into a sql table
             titles = ["StartStationName", "EndStationName", "UserType", "TripDurationinmin"]
             data_frame = pd.read_csv("BikeShare.csv", usecols=titles)
             data_as_array = data_frame.to_numpy()
-            self.cur.execute(f"CREATE TABLE if not exists bike {tuple(titles)};")
-            self.cur.executemany("INSERT INTO bike VALUES (?,?,?,?)", data_as_array)
+            cur.execute(f"CREATE TABLE if not exists bike {tuple(titles)};")
+            cur.executemany("INSERT INTO bike VALUES (?,?,?,?)", data_as_array)
             self.conn.commit()
 
     # put each station name from database on list
     def get_station_names_list(self):
-        self.cur.execute(f"SELECT DISTINCT StartStationName FROM bike")
-        result = self.cur.fetchall()
+        cur = self.cursor
+        cur.execute(f"SELECT DISTINCT StartStationName FROM bike")
+        result = cur.fetchall()
         return result
 
     # select the wanted end station by SQL query
     def select_end_stations(self, duration, start_location, num_of_result):
-
+        cur = self.cursor
         # determine the range of the duration using alpha and beta
         alpha = duration * 0.75 # upper bound
         beta = duration * 1.25 # lower bound
@@ -46,7 +54,7 @@ class Database:
             alpha = duration - 5
 
         # SQL query
-        self.cur.execute(f"SELECT SUM(CASE WHEN UserType='Subscriber' THEN 5 ELSE 1 END) AS Co, "
+        cur.execute(f"SELECT SUM(CASE WHEN UserType='Subscriber' THEN 5 ELSE 1 END) AS Co, "
                          f"EndStationName, AVG(TripDurationinmin) AS Av "
                          f"FROM bike "
                          f"WHERE StartStationName = '{start_location}' "
@@ -55,7 +63,7 @@ class Database:
                          f"ORDER BY Co DESC "
                          f"LIMIT {num_of_result}")
 
-        result = self.cur.fetchall()
+        result = cur.fetchall()
         # self.print_result(result)
         return result
 
